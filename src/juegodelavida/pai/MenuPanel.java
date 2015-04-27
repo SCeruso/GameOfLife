@@ -38,11 +38,11 @@ public class MenuPanel extends JPanel {
 	
 	public MenuPanel(JuegoDeLaVidaFrame parent) {
 		setContainerFrame(parent);
-		setLanzar(new JButton("Lanzar"));
-		setRecorrido(new JButton("Recorrido"));
-		setColor1(new JButton("Color bala"));
-		setColor2(new JButton("Color recorrido"));
-		setVel(new JSlider(0, 200, 100));
+		setLanzar(new JButton("Empezar"));
+		setRecorrido(new JButton("Paso"));
+		setColor1(new JButton("Color celda"));
+		setColor2(new JButton("Color visitado"));
+		setVel(new JSlider(10, 20, 15));
 		setReset(new JButton("Reset"));
 		apuntar = new JButton("Apuntar");
 		apuntar.addActionListener(new ButtonsHandler());
@@ -58,8 +58,8 @@ public class MenuPanel extends JPanel {
 		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		this.setLayout(new GridLayout(1, 4));	  
 
-		getVel().setMajorTickSpacing(50);
-		getVel().setMinorTickSpacing(25);
+		getVel().setMajorTickSpacing(2);
+	//	getVel().setMinorTickSpacing(25);
 		getVel().setPaintLabels(true);
 		getVel().setPaintTicks(true);
 		getVel().addChangeListener(new SliderHandler());
@@ -71,7 +71,7 @@ public class MenuPanel extends JPanel {
 		this.add(getLanzar());
 		this.add(panel);
 		this.add(getRecorrido());
-		this.add(panel2);
+		//this.add(panel2);
 		this.add(getReset());
 		this.requestFocus();
 	}
@@ -138,8 +138,8 @@ public class MenuPanel extends JPanel {
 		@Override
 		public void stateChanged(ChangeEvent e) {
 			int vel = getVel().getValue();
-			//getContainerFrame().getTiroParabolicoPanel().getSkyPanel().setVelocidad(vel);
 			
+			getContainerFrame().getTemporizador().setDelay(1000 / vel);
 		}
 
 	
@@ -154,27 +154,33 @@ public class MenuPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == getLanzar()) {
-				/*if (!getContainerFrame().getTiroParabolicoPanel().getSkyPanel().getTemporizador().isRunning()) {
-					getContainerFrame().getTiroParabolicoPanel().getSkyPanel().setVelocidad(getVel().getValue());
-					getContainerFrame().getTiroParabolicoPanel().getSkyPanel().getTemporizador().start();	
-				}*/
+				if (getContainerFrame().getTemporizador().isRunning()) {
+					getContainerFrame().getTemporizador().stop();
+					getLanzar().setText("Empezar");
+				}
+				else {
+					getContainerFrame().getTemporizador().start();
+					getLanzar().setText("Parar");
+				}
 			}
 			else if(e.getSource() == getReset()) {
-				//getContainerFrame().getTiroParabolicoPanel().getSkyPanel().reset();
-				System.out.println("reset");
+				getContainerFrame().reset();
+				getLanzar().setText("Empezar");
 			}
 			else if (e.getSource() == getRecorrido()) {
+				getLanzar().setText("Empezar");
+				getContainerFrame().getTemporizador().stop();
 				getContainerFrame().getJuegoPanel().siguienteGeneracion();
 			}
 			else if (e.getSource() == getColor1()) {
-				Color color = JColorChooser.showDialog(getContainerFrame(), "Elija un color", Color.RED);
-				//if (color != null)
-					//getContainerFrame().getTiroParabolicoPanel().getSkyPanel().setColorProyectil(color);
+				Color color = JColorChooser.showDialog(getContainerFrame(), "Elija un color", Color.BLACK);
+				if (color != null)
+					getContainerFrame().getJuegoPanel().setColorCelda(color);
 			}
 			else if (e.getSource() == getColor2()) {
-				Color color = JColorChooser.showDialog(getContainerFrame(), "Elija un color", Color.BLUE);
-				//if (color != null)
-					//getContainerFrame().getTiroParabolicoPanel().getSkyPanel().setColorTrayectoria(color);
+				Color color = JColorChooser.showDialog(getContainerFrame(), "Elija un color", Color.WHITE);
+				if (color != null)
+					getContainerFrame().getJuegoPanel().setColorRecorrido(color);
 			}
 		}
 		

@@ -7,17 +7,20 @@ import java.util.BitSet;
 public class JuegoDeLaVida {
 	private ArrayList<BitSet> estadoActual;
 	private ArrayList<BitSet> estadoSiguiente;
+	private ArrayList<BitSet> visitados;
 	private BitSet reglaSupervivencia;
 	private BitSet reglaNacimiento;
 	private int nFilas;
 	private int nCols;
 
-	public static final int[] REGLA_SUPERVIVENCIA_DEFECTO = {2, 3};
 	public static final int[] REGLA_NACIMIENTO_DEFECTO = {3};
+	public static final int[] REGLA_SUPERVIVENCIA_DEFECTO = {2, 3};
+	
 	
 	public JuegoDeLaVida(int nFilas, int nCols) {
 		setnCols(nCols);
 		setnFilas(nFilas);
+		setVisitados(new ArrayList<BitSet>());
 		setReglaNacimiento(REGLA_NACIMIENTO_DEFECTO);
 		setReglaSupervivencia(REGLA_SUPERVIVENCIA_DEFECTO);
 		setEstadoActual(new ArrayList<BitSet>());
@@ -27,24 +30,26 @@ public class JuegoDeLaVida {
 			getEstadoActual().add(new BitSet());
 		for (int i = 0; i < nFilas; i++)
 			getEstadoSiguiente().add(new BitSet());
+		for (int i = 0; i < nFilas; i++)
+			getVisitados().add(new BitSet());
 	}
 	
 	
 	public void siguienteGeneracion() {
 		ArrayList<BitSet> aux;
-		
-		for (int i = 0; i < getnFilas(); i++)
-			getEstadoSiguiente().get(i).clear();
 		 
 		for (int i = 0; i < getnFilas(); i++) {
+			getEstadoSiguiente().get(i).clear();
 			for (int j = 0; j < getnCols(); j++) {
 				if (getEstadoActual().get(i).get(j)) {
 					if (getReglaSupervivencia().get(getNumeroVecinos(i, j)))
 						getEstadoSiguiente().get(i).set(j);
 				}
 				else {
-					if (getReglaNacimiento().get(getNumeroVecinos(i, j)))
+					if (getReglaNacimiento().get(getNumeroVecinos(i, j))) {
 						getEstadoSiguiente().get(i).set(j);
+						addVisitado(new Point(i, j));
+					}
 				}
 			}
 		}
@@ -56,8 +61,24 @@ public class JuegoDeLaVida {
 	public boolean estaViva(int i, int j) {
 		return getEstadoActual().get(i).get(j);
 	}
+	public boolean estaVisitado(int i, int j) {
+		return getVisitados().get(i).get(j);
+	}
+	
+	public void matar (Point cel) {
+		getEstadoActual().get((int)cel.getX()).clear((int)cel.getY());
+	}
+	public void nacer(Point cel) {
+		getEstadoActual().get((int)cel.getX()).set((int)cel.getY());
+		addVisitado(cel);
+	}
 	public void cambiarEstado(Point cel) {
-		getEstadoActual().get((int)cel.getY()).flip((int)cel.getX());
+		getEstadoActual().get((int)cel.getX()).flip((int)cel.getY());
+		if (estaViva((int)cel.getX(), (int)cel.getY()))
+			addVisitado(cel);
+	}
+	private void addVisitado(Point cel) {
+		getVisitados().get((int)cel.getX()).set((int)cel.getY());
 	}
 	private int getNumeroVecinos(int indxI, int indxJ) {
 		int nVecinos = 0;
@@ -91,9 +112,20 @@ public class JuegoDeLaVida {
 	 * Getters y setters ******************************************************
 	 * @return
 	 */
+	
 	public int getnFilas() {
 		return nFilas;
 	}
+
+	public ArrayList<BitSet> getVisitados() {
+		return visitados;
+	}
+
+
+	public void setVisitados(ArrayList<BitSet> visitados) {
+		this.visitados = visitados;
+	}
+
 
 	public void setnFilas(int nFilas) {
 		this.nFilas = nFilas;

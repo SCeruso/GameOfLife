@@ -6,27 +6,44 @@ package juegodelavida.pai;
  * Universiad de La Laguna, Santa Cruz de Tenerife, España.
  */
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 import javax.swing.JFrame;
+import javax.swing.Timer;
 
 public class JuegoDeLaVidaFrame extends JFrame{
 	private MenuPanel menu;
 	private JuegoDeLaVidaPanel juegoPanel;
+	private Timer temporizador;
+	
+	public static final int DELAY_DEFECTO = 66;
 	
 	public JuegoDeLaVidaFrame() {
 		setJuegoPanel(new JuegoDeLaVidaPanel());
 		setMenu(new MenuPanel(this));
-		this.addComponentListener(new WindowHandler());
+		setTemporizador(new Timer(DELAY_DEFECTO, new HandlerTemporizador()));
 		this.add(getMenu(), BorderLayout.SOUTH);
-		this.add(getJuegoPanel());
-	//	getTiroParabolicoPanel().getSkyPanel().requestFocus();
-	
-		
+		this.add(getJuegoPanel());	
 	}
 
-	
+	public void reset() {
+		getTemporizador().stop();
+		getJuegoPanel().reset();
+		repaint();
+	}
+	public Timer getTemporizador() {
+		return temporizador;
+	}
+
+
+	public void setTemporizador(Timer temporizador) {
+		this.temporizador = temporizador;
+	}
+
+
 	public MenuPanel getMenu() {
 		return menu;
 	}
@@ -45,29 +62,11 @@ public class JuegoDeLaVidaFrame extends JFrame{
 	public void setMenu(MenuPanel menu) {
 		this.menu = menu;
 	}
-	class WindowHandler implements ComponentListener {
+	class HandlerTemporizador implements ActionListener {
 
 		@Override
-		public void componentHidden(ComponentEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void componentMoved(ComponentEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void componentResized(ComponentEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void componentShown(ComponentEvent arg0) {
-			// TODO Auto-generated method stub
+		public void actionPerformed(ActionEvent arg0) {
+			getJuegoPanel().siguienteGeneracion();
 			
 		}
 		

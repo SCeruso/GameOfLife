@@ -13,7 +13,7 @@ public class Tabla {
 	private int alto;
 	private Color cellColor;
 	
-	public static Color COLOR_CELDA_DEFECTO = Color.BLUE;
+	
 	
 	public Tabla (int ancho, int alto, int nfilas, int ncols) {
 		setAlto(alto);
@@ -22,7 +22,7 @@ public class Tabla {
 		setNcols(ncols);
 		setEspacioCols((double)((double)ancho / (double)ncols));
 		setEspacioFilas((double)((double)alto / (double)nfilas));
-		setCellColor(COLOR_CELDA_DEFECTO);
+		setCellColor(JuegoDeLaVidaGrafico.COLOR_CELDA_DEFECTO);
 	}
 
 	public void paintTabla (Graphics g) {		
@@ -37,8 +37,8 @@ public class Tabla {
 		}
 	}
 	public void paintCell(int coordX, int coordY, Graphics g) {
-		int ancho = (int)Math.round(getEspacioCols());
-		int alto = (int)Math.round(getEspacioFilas());
+		int ancho = (int)Math.ceil(getEspacioCols());
+		int alto = (int)Math.ceil(getEspacioFilas());
 		
 		g.setColor(getCellColor());
 		
