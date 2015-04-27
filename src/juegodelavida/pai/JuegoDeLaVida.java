@@ -59,6 +59,8 @@ public class JuegoDeLaVida {
 	}
 	
 	public boolean estaViva(int i, int j) {
+		i = (i + getnFilas()) % getnFilas();
+		j = (j + getnCols()) % getnCols();
 		return getEstadoActual().get(i).get(j);
 	}
 	public boolean estaVisitado(int i, int j) {
@@ -83,29 +85,29 @@ public class JuegoDeLaVida {
 	private int getNumeroVecinos(int indxI, int indxJ) {
 		int nVecinos = 0;
 		
-		if (indxI > 0) {
-			if (getEstadoActual().get(indxI - 1).get(indxJ))
+	//	if (indxI > 0) {
+			if (estaViva(indxI - 1, indxJ))
 				nVecinos++;
-			if (indxJ > 0)
-				if (getEstadoActual().get(indxI - 1).get(indxJ - 1))
+	//		if (indxJ > 0)
+				if (estaViva(indxI - 1, indxJ - 1))
 					nVecinos++;
-			if (getEstadoActual().get(indxI - 1).get(indxJ + 1))
+			if (estaViva(indxI - 1, indxJ + 1))
 				nVecinos++;
-		}
-		if (indxJ > 0)
-			if (getEstadoActual().get(indxI).get(indxJ - 1))
+		//}
+		//if (indxJ > 0)
+			if (estaViva(indxI, indxJ - 1))
 				nVecinos++;
-		if (getEstadoActual().get(indxI).get(indxJ + 1))
+		if (estaViva(indxI, indxJ + 1))
 			nVecinos++;
-		if (indxI < getnFilas() - 1) {
-			if (getEstadoActual().get(indxI + 1).get(indxJ))
+	//	if (indxI < getnFilas() - 1) {
+			if (estaViva(indxI + 1, indxJ))
 				nVecinos++;
-			if (indxJ > 0)
-				if (getEstadoActual().get(indxI + 1).get(indxJ - 1))
+		//	if (indxJ > 0)
+				if (estaViva(indxI + 1, indxJ - 1))
 					nVecinos++;
-			if (getEstadoActual().get(indxI + 1).get(indxJ + 1))
+			if (estaViva(indxI + 1, indxJ + 1))
 				nVecinos++;
-		}
+		//}
 		return nVecinos;
 	}
 	/**

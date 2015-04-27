@@ -13,9 +13,10 @@ import javax.swing.JPanel;
 public class JuegoDeLaVidaPanel extends JPanel{
 
 	private JuegoDeLaVidaGrafico juego;
-	public static final int SIZE_CELDA = 8;
+	public static final int SIZE_CELDA = 6;
 	
 	public JuegoDeLaVidaPanel() {
+		setJuego(new JuegoDeLaVidaGrafico(0, 0, 0, 0));
 		MouseHandler mousehandler = new MouseHandler();
 		this.addComponentListener(new SizeChangeListener());
 		this.addMouseListener(mousehandler);

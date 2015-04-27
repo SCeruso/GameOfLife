@@ -9,8 +9,8 @@ public class JuegoDeLaVidaGrafico {
 	private JuegoDeLaVida juego;
 	private Color colorCelda;
 	private Color colorRecorrido;
-	public static Color COLOR_CELDA_DEFECTO = Color.BLACK;
-	public static Color COLOR_VISITADO_DEFECTO = new Color(101, 255, 111);
+	public static final Color COLOR_CELDA_DEFECTO = Color.BLACK;
+	public static final Color COLOR_VISITADO_DEFECTO = new Color(101, 255, 111);
 	
 	public JuegoDeLaVidaGrafico(int ancho, int alto, int nfilas, int ncols) {
 		setTabla(new Tabla(ancho, alto, nfilas, ncols));
