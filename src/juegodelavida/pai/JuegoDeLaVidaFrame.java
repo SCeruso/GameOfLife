@@ -8,13 +8,12 @@ package juegodelavida.pai;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 
+import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-public class JuegoDeLaVidaFrame extends JFrame{
+public class JuegoDeLaVidaFrame extends JApplet{
 	private MenuPanel menu;
 	private JuegoDeLaVidaPanel juegoPanel;
 	private Timer temporizador;
@@ -29,6 +28,26 @@ public class JuegoDeLaVidaFrame extends JFrame{
 		this.add(getJuegoPanel());	
 	}
 
+	public void init() {
+		//setTitle("Juego de la vida");
+		setSize(1200, 800);
+		//this.set
+		//setExtendedState(JFrame.MAXIMIZED_BOTH);
+	}
+	public static void main(String[] args) {
+		 JFrame frame = new JFrame();
+		 frame.setTitle("Juego de la vida");
+		 frame.setSize(1200, 500);
+		 frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	 	 frame.setLocationRelativeTo(null); // Center the frame
+	     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	     frame.add(new JuegoDeLaVidaFrame());
+		 frame.setVisible(true);
+		 
+
+	}
+	
+	
 	public void reset() {
 		getTemporizador().stop();
 		getJuegoPanel().reset();
